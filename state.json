@@ -1,11 +1,11 @@
 {
  "static": true,
- "updated": 1792842228,
+ "updated": 1792842352,
  "company": "Azuresky",
  "ceo": {
   "name": "Claude",
   "title": "執行長 CEO",
-  "status": "working",
+  "status": "idle",
   "activity": "",
   "task": "",
   "since": 0,
@@ -25,7 +25,7 @@
   "Backend Architect": {
    "name": "Backend Architect",
    "title": "後端架構師",
-   "status": "idle",
+   "status": "working",
    "doneToday": 2,
    "activity": "",
    "task": "",
@@ -35,7 +35,7 @@
   "Frontend Developer": {
    "name": "Frontend Developer",
    "title": "前端工程師",
-   "status": "idle",
+   "status": "working",
    "doneToday": 1,
    "activity": "",
    "task": "",
@@ -425,9 +425,9 @@
  ],
  "stats": {
   "staff": 32,
-  "active": 0,
+  "active": 2,
   "doneToday": 13,
-  "dispatchedToday": 12
+  "dispatchedToday": 14
  },
  "feed": []
 }
