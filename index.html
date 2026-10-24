@@ -710,6 +710,45 @@ const glowPts = new THREE.Points(new THREE.BufferGeometry().setAttribute("positi
   new THREE.PointsMaterial({ map: glowTex, color: 0xffcf8a, size: 2.6, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
 scene.add(glowPts);
 
+// GigaDesk branch annex on the east lawn: clear of the lawn trees (x 28.75 / 36), the perimeter footpath (x 41.6),
+// the monument and flags (z 40); a short stone path joins it to the footpath. Status comes from state.branches.
+const BRANCH = { branch: true, name: "GigaDesk", title: "", online: false, known: false };
+const annex = new THREE.Group(); annex.position.set(35.5, -0.1, 31.5); scene.add(annex);
+{
+  const wy = 0.3, h = 2.8, top = wy + h;
+  B(annex, 6.4, wy, 5.4, MAT.stone, 0, wy / 2, 0);
+  B(annex, 5.5, 0.02, 4.5, MAT.deck, 0, wy + 0.01, 0, { cast: false });
+  for (const s of [-1, 1]) { PL(annex, 5.6, h, MAT.glass, 0, wy + h / 2, s * 2.3); PL(annex, 4.6, h, MAT.glass, s * 2.8, wy + h / 2, 0, { ry: Math.PI / 2 }); }
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) B(annex, 0.16, h, 0.16, MAT.graphite, sx * 2.8, wy + h / 2, sz * 2.3);
+  B(annex, 0.06, 2.3, 1.3, MAT.graphite, 2.82, wy + 1.15, 0, { cast: false }); // door frame toward the footpath
+  B(annex, 6.6, 0.5, 5.6, MAT.fin, 0, top + 0.25, 0); band(annex, top + 0.02, 0.04, 0.03, 0, MAT.led);
+  B(city, 3.0, 0.04, 1.2, MAT.stone, 39.8, -0.08, 31.5, { cast: false });
+  at(0, wy, -0.6, 0, () => {
+    B(annex, 2.2, 0.05, 0.8, MAT.oak, 0, 0.745, 0); for (const s of [-1, 1]) B(annex, 0.06, 0.72, 0.7, MAT.white, s * 1.05, 0.36, 0);
+    for (const x of [-0.45, 0.45]) { B(annex, 0.62, 0.38, 0.03, MAT.dark, x, 1.1, -0.2); B(annex, 0.05, 0.3, 0.03, MAT.alu, x, 0.9, -0.22); }
+    officeChair(annex, 0, 0.75, Math.PI);
+  });
+  plant(annex, -2.2, 1.7, 0.8);
+  C(annex, 0.04, 0.04, 0.8, MAT.alu, 2.3, top + 0.9, -1.9, { seg: 6 });
+}
+// band() is sized for the main building; rescale the annex LED line instead of adding another helper
+const annexLight = new THREE.Mesh(new THREE.SphereGeometry(0.17, 16, 12), new THREE.MeshBasicMaterial({ color: 0x8a9096 }));
+annexLight.position.set(2.3, 3.1 + 1.35, -1.9); annex.add(annexLight);
+const annexGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0x3ddc84, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+annexGlow.scale.setScalar(2.4); annexGlow.position.copy(annexLight.position); annexGlow.visible = false; annex.add(annexGlow);
+sign(annex, "GigaDesk 分部", 3.2, 0.5, 0, 3.35, 2.81, 0, { w: 1024, h: 160, size: 104, color: "#ffffff", bg: "#24434a" });
+sign(annex, "GigaDesk 分部", 3.2, 0.5, -3.31, 3.35, 0, -Math.PI / 2, { w: 1024, h: 160, size: 104, color: "#ffffff", bg: "#24434a" });
+const annexHit = new THREE.Mesh(new THREE.BoxGeometry(6.6, 4.6, 5.6), new THREE.MeshBasicMaterial({ visible: false }));
+annexHit.position.y = 2.3; annexHit.userData.branch = true; annex.add(annexHit);
+const annexLabel = css(Object.assign(document.createElement("div"), { className: "flabel blabel" }));
+annexLabel.position.set(0, 5.6, 0); annex.add(annexLabel);
+function setBranch(gd) {
+  BRANCH.known = !!gd; BRANCH.title = gd?.title || ""; BRANCH.online = !STALE && gd?.status === "online";
+  annexLight.material.color.set(BRANCH.online ? 0x3ddc84 : 0x8a9096); annexGlow.visible = BRANCH.online;
+  annexLabel.element.classList.toggle("on", BRANCH.online);
+  annexLabel.element.replaceChildren(document.createElement("i"), `GigaDesk · ${BRANCH.online ? "上線中" : "離線"}`);
+}
+
 // moving traffic
 const traffic = [];
 for (let k = 0; k < (MOBILE ? 8 : 18); k++) {
@@ -753,6 +792,17 @@ function edgeBand(g) {
   band(g, -0.41, 0.045, 0.03, 1.50, MAT.led);
 }
 
+// chair + monitor + live screen for one seat on the `side` (+1 / -1) of a desk centred at depth cz (desk top at y 0.77)
+function workstation(g, sx, cz, side) {
+  const sz = cz + side * 0.95, yaw = side > 0 ? Math.PI : 0, my = side > 0 ? 0 : Math.PI;
+  officeChair(g, sx, sz, yaw);
+  at(sx, 0, cz + side * 0.15, my, () => { B(g, 0.2, 0.02, 0.16, MAT.alu, 0, 0.78, -0.02); B(g, 0.05, 0.24, 0.03, MAT.alu, 0, 0.9, -0.04); B(g, 0.62, 0.38, 0.025, MAT.white, 0, 1.1, 0); B(g, 0.42, 0.015, 0.13, MAT.white, 0, 0.775, 0.3); });
+  if (Math.random() < 0.5) C(g, 0.04, 0.035, 0.09, MAT.white, sx + 0.38, 0.815, cz + side * 0.35, { seg: 10 });
+  const screenMat = new THREE.MeshStandardMaterial({ color: 0x10151c, emissive: 0x6fd3ff, emissiveIntensity: 0.05, roughness: 0.2 });
+  const scr = new THREE.Mesh(new THREE.PlaneGeometry(0.56, 0.32), screenMat);
+  scr.position.set(sx, 1.11, cz + side * 0.164); scr.rotation.y = my; g.add(scr);
+  return { x: sx, z: sz, yaw, pose: "sit", h: 0.48, screen: screenMat };
+}
 function teamTable(g, ceil, f, cx, cz, dept, color) {
   ao(g, cx, cz, 4.4, 3.2);
   B(g, 3.4, 0.05, 1.1, MAT.oak, cx, 0.745, cz);
@@ -760,14 +810,8 @@ function teamTable(g, ceil, f, cx, cz, dept, color) {
   B(g, 3.0, 0.05, 0.06, MAT.white, cx, 0.3, cz);
   const lane = cx + 2.4, out = [];
   for (const side of [1, -1]) for (const dx of [-0.8, 0.8]) {
-    const sx = cx + dx, sz = cz + side * 0.95, yaw = side > 0 ? Math.PI : 0, my = side > 0 ? 0 : Math.PI;
-    officeChair(g, sx, sz, yaw);
-    at(sx, 0, cz + side * 0.15, my, () => { B(g, 0.2, 0.02, 0.16, MAT.alu, 0, 0.78, -0.02); B(g, 0.05, 0.24, 0.03, MAT.alu, 0, 0.9, -0.04); B(g, 0.62, 0.38, 0.025, MAT.white, 0, 1.1, 0); B(g, 0.42, 0.015, 0.13, MAT.white, 0, 0.775, 0.3); });
-    if (Math.random() < 0.5) C(g, 0.04, 0.035, 0.09, MAT.white, sx + 0.38, 0.815, cz + side * 0.35, { seg: 10 });
-    const screenMat = new THREE.MeshStandardMaterial({ color: 0x10151c, emissive: 0x6fd3ff, emissiveIntensity: 0.05, roughness: 0.2 });
-    const scr = new THREE.Mesh(new THREE.PlaneGeometry(0.56, 0.32), screenMat);
-    scr.position.set(sx, 1.11, cz + side * 0.164); scr.rotation.y = my; g.add(scr);
-    out.push({ x: sx, z: sz, yaw, pose: "sit", h: 0.48, screen: screenMat, via: [[lane, AISLE], [lane, sz + side * 0.65], [sx, sz + side * 0.65]] });
+    const s = workstation(g, cx + dx, cz, side);
+    out.push({ ...s, via: [[lane, AISLE], [lane, s.z + side * 0.65], [s.x, s.z + side * 0.65]] });
   }
   sign(g, dept, 1.3, 0.32, cx, 1.02, cz, 0, { w: 512, h: 128, size: 60, color: "#ffffff", bg: color, double: true });
   for (const dx of [-0.8, 0.8]) { C(ceil, 0.006, 0.006, 1.2, MAT.dark, cx + dx, FH - 0.96, cz, { seg: 4 }); C(ceil, 0.12, 0.3, 0.24, MAT.white, cx + dx, FH - 1.6, cz); C(ceil, 0.28, 0.28, 0.01, MAT.lamp, cx + dx, FH - 1.725, cz); }
@@ -898,6 +942,36 @@ function ceoSuite(g, ceil, S) {
   S.seats.ceo = [{ x: -12.5, z: -4.95, yaw: 0, pose: "sit", h: 0.48, screen: null, via: [[-7.6, AISLE], [-7.6, 3.4], [-10.6, -1.6], [-10.6, -4.95]] }];
   S.ceoSofa = [-1, 1].map(s => ({ x: -15.95, z: 1.6 + s * 0.5, yaw: Math.PI / 2, pose: "sit", h: 0.42, taken: null, via: [[-7.6, AISLE], [-7.6, 3.4], [-14.6, 3.4], [-14.6, 1.6 + s * 0.5]] }));
 }
+// ChatGPT advisory office (4F, centre wing, second row). Walls stay east of the spine (x 0.5), west of the sec table
+// lane (x 5.2), 0.7 m behind that table's seat path (z -1.4) and 0.8 m short of the aisle; the door at x 3.5..4.5 faces the aisle.
+function gptOffice(g, ceil, S) {
+  const h = FH - 0.4, X0 = 0.6, X1 = 4.85, Z0 = -0.7, Z1 = 5.6, DX = 4.0, cx = (X0 + X1) / 2, cz = (Z0 + Z1) / 2;
+  PL(g, X1 - X0, h, MAT.partition, cx, h / 2, Z0);
+  for (const x of [X0, X1]) PL(g, Z1 - Z0, h, MAT.partition, x, h / 2, cz, { ry: Math.PI / 2 });
+  PL(g, DX - 0.5 - X0, h, MAT.partition, (X0 + DX - 0.5) / 2, h / 2, Z1); PL(g, X1 - DX - 0.5, h, MAT.partition, (DX + 0.5 + X1) / 2, h / 2, Z1);
+  for (const [x, z] of [[X0, Z0], [X1, Z0], [X0, Z1], [X1, Z1], [DX - 0.5, Z1], [DX + 0.5, Z1]]) B(g, 0.05, h, 0.05, MAT.teal, x, h / 2, z, { cast: false });
+  for (const z of [Z0, Z1]) B(g, X1 - X0, 0.06, 0.06, MAT.teal, cx, h, z, { cast: false });
+  for (const x of [X0, X1]) B(g, 0.06, 0.06, Z1 - Z0, MAT.teal, x, h, cz, { cast: false });
+  sign(g, "ChatGPT 首席顧問室", 2.6, 0.4, 2.05, 2.75, Z1 + 0.02, 0, { w: 1024, h: 160, size: 84, color: "#0e7f63" });
+  sign(g, "Codex", 0.8, 0.24, 2.05, 2.36, Z1 + 0.02, 0, { w: 512, h: 150, size: 92, color: "#ffffff", bg: "#1d4a42" });
+  rug(g, 2.6, 2.3, 3.7, 5.4, MAT.rugTeal);
+  // back feature panel
+  B(g, 3.0, 2.2, 0.06, MAT.teal, 2.5, 1.55, -0.64);
+  sign(g, "ChatGPT", 2.2, 0.5, 2.5, 1.95, -0.6, 0, { color: "#ffffff", w: 1024, h: 230, size: 150 });
+  // ChatGPT's desk (chair faces the room) and the three-seat Codex bench
+  ao(g, 2.5, 0.85, 2.8, 1.6);
+  B(g, 2.0, 0.05, 1.0, MAT.quartz, 2.5, 0.745, 0.85); B(g, 1.9, 0.6, 0.04, MAT.teal, 2.5, 0.4, 1.3);
+  for (const s of [-1, 1]) B(g, 0.06, 0.72, 0.95, MAT.white, 2.5 + s * 0.97, 0.36, 0.85);
+  ao(g, 2.0, 3.2, 3.2, 2.6);
+  B(g, 2.5, 0.05, 1.1, MAT.oak, 2.0, 0.745, 3.2);
+  for (const s of [-1, 1]) B(g, 0.06, 0.72, 0.9, MAT.white, 2.0 + s * 1.2, 0.36, 3.2);
+  plant(g, 1.0, -0.3, 0.7); plant(g, 0.95, 5.2, 0.7);
+  for (const [x, z] of [[2.5, 0.85], [2.0, 3.2]]) { C(ceil, 0.006, 0.006, 1.2, MAT.dark, x, FH - 0.96, z, { seg: 4 }); C(ceil, 0.12, 0.3, 0.24, MAT.teal, x, FH - 1.6, z); C(ceil, 0.28, 0.28, 0.01, MAT.lamp, x, FH - 1.725, z); }
+  S.seats.codex = [
+    { ...workstation(g, 2.5, 0.85, -1), lead: true, via: [[DX, AISLE], [DX, -0.1]] },
+    ...[1.2, 2.0, 2.8].map(sx => ({ ...workstation(g, sx, 3.2, 1), via: [[DX, AISLE], [DX, 4.85], [sx, 4.85]] })),
+  ];
+}
 function lobby(g, S) {
   B(g, 10.8, 3.6, 0.3, MAT.stone, -11.9, 1.8, -9.45);
   sign(g, "AZURESKY", 8, 1.6, -11.9, 2.2, -9.29, 0, { color: "#0d5bd7", glow: "#bfe6ff" });
@@ -975,7 +1049,7 @@ function buildFloor(f) {
     const d = DEPTS[dept] || { name: dept, color: "#8a8f98" };
     S.seats[dept] = slots.flatMap(([cx, cz]) => teamTable(g, ceil, f, cx, cz, d.name, d.color));
   }
-  if (f === 4) ceoSuite(g, ceil, S); else if (f === 1) lobby(g, S); else featureWall(g, f, plan.wall);
+  if (f === 4) { ceoSuite(g, ceil, S); gptOffice(g, ceil, S); } else if (f === 1) lobby(g, S); else featureWall(g, f, plan.wall);
   departmentExhibit(g, f);
   cafe(g, ceil, S); lounge(g, S); meetingRoom(g, f, S, plan.room);
   const fl = css(Object.assign(document.createElement("div"), { className: "flabel", textContent: plan.label }));
@@ -1056,17 +1130,18 @@ const people = Object.create(null), pickables = []; // null prototype: agent nam
 const SKIN = [0xf1c7a3, 0xe0ac87, 0xc68b62, 0x8d5a3b, 0xf5d6c0];
 const HAIR = [0x2b1d14, 0x5a3a22, 0x1a1a1a, 0x9a6a3a, 0xd8c08a, 0x6b6b6b];
 const PANTS = [0x2e3640, 0x3d3a36, 0x4a5568, 0x23262b, 0x5b4b3a];
-function makeBody(color, key, ceo) {
+function makeBody(color, key, ceo, gpt) {
   const h = hash(key);
   const root = new THREE.Group(), body = new THREE.Group(); root.add(body);
-  const shirt = ceo ? M(0x1f2a44, { roughness: 0.6 }) : M(color, { roughness: 0.8 });
-  const skin = M(SKIN[h % SKIN.length], { roughness: 0.6 }), hair = M(HAIR[(h >>> 3) % HAIR.length], { roughness: 0.9 }), pants = M(PANTS[(h >>> 5) % PANTS.length]); // >>>: h is unsigned, >> made negative indexes
+  const shirt = ceo ? M(0x1f2a44, { roughness: 0.6 }) : gpt ? M(0x10a37f, { roughness: 0.55 }) : M(color, { roughness: 0.8 });
+  const skin = M(SKIN[h % SKIN.length], { roughness: 0.6 }), hair = M(HAIR[(h >>> 3) % HAIR.length], { roughness: 0.9 }), pants = M(gpt ? 0x16312e : PANTS[(h >>> 5) % PANTS.length]); // >>>: h is unsigned, >> made negative indexes
   const mesh = (geo, mat, parent, x, y, z) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.castShadow = true; parent.add(m); return m; };
   const legGeo = new THREE.CapsuleGeometry(0.08, 0.62, 4, 8); legGeo.translate(0, -0.39, 0);
   const shoeGeo = new THREE.BoxGeometry(0.13, 0.08, 0.26);
   const legs = [-0.1, 0.1].map(x => { const l = mesh(legGeo, pants, body, x, 0.86, 0); mesh(shoeGeo, MAT.dark, l, 0, -0.8, 0.05); return l; });
   const torso = mesh(new THREE.CapsuleGeometry(0.2, 0.36, 4, 12), shirt, body, 0, 1.17, 0); torso.scale.set(1.12, 1, 0.82);
   if (ceo) { mesh(new THREE.BoxGeometry(0.14, 0.2, 0.02), MAT.white, body, 0, 1.33, 0.165); mesh(new THREE.BoxGeometry(0.05, 0.3, 0.02), M(0x8b1e2d), body, 0, 1.22, 0.172); }
+  if (gpt) { mesh(new THREE.TorusGeometry(0.09, 0.03, 6, 16), MAT.white, body, 0, 1.45, 0).rotation.x = Math.PI / 2; mesh(new THREE.BoxGeometry(0.09, 0.09, 0.02), MAT.white, body, 0.1, 1.24, 0.17); } // white collar ring + badge
   mesh(new THREE.CylinderGeometry(0.06, 0.07, 0.1, 10), skin, body, 0, 1.47, 0);
   const head = mesh(new THREE.SphereGeometry(0.16, 20, 16), skin, body, 0, 1.64, 0);
   const style = (h >>> 7) % 3;
@@ -1083,14 +1158,14 @@ function makeBody(color, key, ceo) {
 }
 function makePerson(info, dept, color) {
   const home = TEAM_FLOOR[dept] || 1, seatsDept = TEAM_FLOOR[dept] ? dept : "contract";
-  const parts = makeBody(color, info.name, dept === "ceo");
+  const parts = makeBody(color, info.name, dept === "ceo", info.name === "ChatGPT");
   const tagEl = document.createElement("div"); tagEl.className = "tag";
   const bubbleEl = document.createElement("div"); bubbleEl.className = "bubble";
   const nameEl = document.createElement("div"); nameEl.className = "name"; nameEl.textContent = info.name;
   tagEl.append(bubbleEl, nameEl);
   const tag = css(tagEl); tag.position.y = 2.0; parts.root.add(tag);
   const taken = new Set(Object.values(people).map(p => p.desk));
-  const desk = (spots[home].seats[seatsDept] || []).find(s => !taken.has(s)) || null;
+  const desk = (spots[home].seats[seatsDept] || []).find(s => !taken.has(s) && (!s.lead || info.name === "ChatGPT")) || null;
   const start = desk || spots[home].window();
   const p = {
     ...parts, name: info.name, title: info.title, deptName: info.deptName, dept, color, home, floor: home, desk, tag, bubbleEl, nameEl,
