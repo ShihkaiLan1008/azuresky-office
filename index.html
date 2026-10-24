@@ -721,19 +721,18 @@ const annex = new THREE.Group(); annex.position.set(35.5, -0.1, 31.5); scene.add
   for (const s of [-1, 1]) { PL(annex, 5.6, h, MAT.glass, 0, wy + h / 2, s * 2.3); PL(annex, 4.6, h, MAT.glass, s * 2.8, wy + h / 2, 0, { ry: Math.PI / 2 }); }
   for (const sx of [-1, 1]) for (const sz of [-1, 1]) B(annex, 0.16, h, 0.16, MAT.graphite, sx * 2.8, wy + h / 2, sz * 2.3);
   B(annex, 0.06, 2.3, 1.3, MAT.graphite, 2.82, wy + 1.15, 0, { cast: false }); // door frame toward the footpath
-  B(annex, 6.6, 0.5, 5.6, MAT.fin, 0, top + 0.25, 0); band(annex, top + 0.02, 0.04, 0.03, 0, MAT.led);
+  B(annex, 6.6, 0.5, 5.6, MAT.fin, 0, top + 0.25, 0); B(annex, 6.64, 0.04, 5.64, MAT.led, 0, top + 0.02, 0, { cast: false }); // LED reveal under the roof edge
   B(city, 3.0, 0.04, 1.2, MAT.stone, 39.8, -0.08, 31.5, { cast: false });
   at(0, wy, -0.6, 0, () => {
     B(annex, 2.2, 0.05, 0.8, MAT.oak, 0, 0.745, 0); for (const s of [-1, 1]) B(annex, 0.06, 0.72, 0.7, MAT.white, s * 1.05, 0.36, 0);
     for (const x of [-0.45, 0.45]) { B(annex, 0.62, 0.38, 0.03, MAT.dark, x, 1.1, -0.2); B(annex, 0.05, 0.3, 0.03, MAT.alu, x, 0.9, -0.22); }
     officeChair(annex, 0, 0.75, Math.PI);
+    plant(annex, -2.2, 2.3, 0.8);
   });
-  plant(annex, -2.2, 1.7, 0.8);
-  C(annex, 0.04, 0.04, 0.8, MAT.alu, 2.3, top + 0.9, -1.9, { seg: 6 });
+  C(annex, 0.04, 0.04, 0.8, MAT.alu, 2.3, top + 0.9, -1.9, { seg: 6 }); // status-light mast
 }
-// band() is sized for the main building; rescale the annex LED line instead of adding another helper
 const annexLight = new THREE.Mesh(new THREE.SphereGeometry(0.17, 16, 12), new THREE.MeshBasicMaterial({ color: 0x8a9096 }));
-annexLight.position.set(2.3, 3.1 + 1.35, -1.9); annex.add(annexLight);
+annexLight.position.set(2.3, 4.5, -1.9); annex.add(annexLight);
 const annexGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0x3ddc84, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
 annexGlow.scale.setScalar(2.4); annexGlow.position.copy(annexLight.position); annexGlow.visible = false; annex.add(annexGlow);
 sign(annex, "GigaDesk 分部", 3.2, 0.5, 0, 3.35, 2.81, 0, { w: 1024, h: 160, size: 104, color: "#ffffff", bg: "#24434a" });
@@ -1416,7 +1415,7 @@ function focusFloor(f) {
   viewFloor = f;
   // HTML labels are not hidden by floors, so a floor view shows only that floor's labels.
   for (let i = 1; i <= FLOORS; i++) { floors[i].group.visible = !f || i <= f; floors[i].label.visible = !f || i === f; floors[i].ceil.visible = i !== f; }
-  roof.visible = !f; portal.visible = !f || f > 2;
+  roof.visible = !f; portal.visible = !f || f > 2; annexLabel.visible = !f;
   document.body.classList.toggle("overview", !f);
   for (const p of Object.values(people)) p.tag.visible = !f || p.floor === f;
   const ty = f ? fy(f) + 1.2 : 7;
@@ -1493,8 +1492,10 @@ function sync(s) {
   const newest = Math.max(0, ...feed.map(x => x.t));
   if (lastFeedT !== null) for (const x of [...feed].reverse()) if (x.kind === "assign" && x.t > lastFeedT) fly(x.who, x.to, x.task);
   lastFeedT = Math.max(lastFeedT || 0, newest);
-  const st = s.stats || {};
-  $("chips").innerHTML = [["員工", st.staff], ["工作中", st.active], ["今日指派", st.dispatchedToday], ["今日完成", st.doneToday], ["工具呼叫", st.toolsToday]].filter(([, v]) => v != null)
+  const st = s.stats || {}, branches = Array.isArray(s.branches) ? s.branches.filter(b => b && typeof b === "object") : null; // older states have no branches
+  setBranch(branches?.find(b => b.name === "GigaDesk"));
+  const branchChip = branches?.length ? `${STALE ? 0 : branches.filter(b => b.status === "online").length}/${branches.length} 上線` : null;
+  $("chips").innerHTML = [["員工", st.staff], ["工作中", st.active], ["今日指派", st.dispatchedToday], ["今日完成", st.doneToday], ["工具呼叫", st.toolsToday], ["分部", branchChip]].filter(([, v]) => v != null)
     .map(([k, v]) => `<span class="chip">${k}<b>${v}</b></span>`).join("");
   $("feed").innerHTML = feed.length ? feed.map(f => `<li class="k-${f.kind}"><time>${hhmm(f.t)}</time><span class="who">${esc(f.who)}</span> ${esc(f.text)}</li>`).join("")
     : "<li>還沒有動態。跟 Claude 聊天或派出 agent 後會即時更新。</li>";
@@ -1513,7 +1514,7 @@ async function poll() {
     if (STATIC) {
       const min = Math.max(0, Math.floor((Date.now() / 1000 - (+j.updated || 0)) / 60));
       STALE = !j.updated || min >= 15;
-      $("snap").textContent = STALE ? `已離線 · 最後更新 ${min} 分鐘前` : `快照 · 更新於 ${min} 分鐘前`;
+      $("snap").textContent = STALE ? `已離線 · 最後更新 ${min} 分鐘前` : `更新於 ${min} 分鐘前`; // the live badge already says 快照
       $("snap").hidden = false;
     }
     sync(j);
@@ -1534,6 +1535,14 @@ function renderCard() {
   if (!selected) { c.classList.remove("on"); return; }
   const p = selected;
   c.classList.add("on");
+  if (p.branch) {
+    c.innerHTML = `<h4>${esc(p.name)} 分部</h4><div style="color:var(--muted);margin-bottom:6px">${esc(p.title || "—")} · 園區東側草坪分館</div>
+      <div class="row"><span>名稱</span><span>${esc(p.name)}</span></div><div class="row"><span>職能</span><span>${esc(p.title || "—")}</span></div>
+      <div class="row"><span>狀態</span><span>${p.online ? "🟢 上線中" : p.known ? "⚪ 離線" : "⚪ 離線（尚無回報）"}</span></div>
+      <div class="btns"><button id="cls">關閉</button></div>`;
+    $("cls").onclick = () => select(null);
+    return;
+  }
   c.innerHTML = `<h4>${esc(p.name)}</h4><div style="color:var(--muted);margin-bottom:6px">${esc(p.title)} · ${esc(p.deptName)} · 座位 ${p.home}F · 現在 ${p.floor}F</div>
     <div class="row"><span>狀態</span><span>${p.engine === "Codex" ? p.mode === "unassigned" ? "⚪ 尚未啟動" : p.real === "working" ? "🟢 工作回報中" : "⚪ 目前無執行中任務" : p.real === "working" ? "🟢 工作中" : "⚪ " + (STATE_ZH[p.state] || "閒置")}</span></div>
     ${STATIC ? `<div class="row"><span>職責</span><span>${esc(p.role || p.title)}</span></div>` : `<div class="row"><span>目前</span><span>${esc(p.real === "working" ? p.activity : p.engine === "Codex" ? "—" : p.bubbleEl.textContent || "—")}</span></div>`}
@@ -1546,9 +1555,9 @@ function renderCard() {
   $("cls").onclick = () => select(null);
 }
 function select(p) {
-  if (selected) selected.nameEl.classList.remove("sel");
+  selected?.nameEl?.classList.remove("sel");
   selected = p; follow = false;
-  if (p) { p.nameEl.classList.add("sel"); ring.visible = true; } else ring.visible = false;
+  p?.nameEl?.classList.add("sel"); ring.visible = !!p && !p.branch;
   renderCard();
 }
 const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
@@ -1559,8 +1568,8 @@ renderer.domElement.addEventListener("pointerup", e => {
   ptr.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
   ray.setFromCamera(ptr, camera);
   const vis = pickables.filter(m => { const p = people[m.userData.pid]; return p && (p.riding || floors[p.floor].group.visible); });
-  const hit = ray.intersectObjects(vis, false)[0];
-  select(hit ? people[hit.object.userData.pid] : null);
+  const hit = ray.intersectObjects([...vis, annexHit], false)[0];
+  select(hit ? (hit.object.userData.branch ? BRANCH : people[hit.object.userData.pid]) : null);
 });
 document.querySelectorAll("[data-floor]").forEach(b => (b.onclick = () => focusFloor(+b.dataset.floor)));
 $("rot").onclick = () => { controls.autoRotate = !controls.autoRotate; $("rot").classList.toggle("on", controls.autoRotate); $("rot").setAttribute("aria-pressed", String(controls.autoRotate)); };
@@ -1728,7 +1737,7 @@ function loop() {
   requestAnimationFrame(loop);
   step(Math.min(clock.getDelta(), 0.05));
 }
-window.__office = { step, people, cars: CARS }; // lets a test drive and inspect the simulation when the tab is throttled
+window.__office = { step, people, cars: CARS, sync, branch: BRANCH }; // lets a test drive and inspect the simulation when the tab is throttled
 function step(dt) {
   now += dt;
   if (built) {
@@ -1748,7 +1757,7 @@ function step(dt) {
     if (c.horizontal) { c.g.position.set(c.pos, -0.15, c.lane); c.g.rotation.y = c.dir > 0 ? Math.PI / 2 : -Math.PI / 2; }
     else { c.g.position.set(c.lane, -0.15, c.pos); c.g.rotation.y = c.dir > 0 ? 0 : Math.PI; }
   }
-  if (selected) {
+  if (selected && !selected.branch) {
     if (!selected.riding) { floors[selected.floor].group.add(ring); ring.position.set(selected.x, 0.03, selected.z); } else ring.visible = false;
     ring.visible = !selected.riding;
     if (follow) {
@@ -1768,6 +1777,7 @@ function step(dt) {
   labels.render(scene, camera);
 }
 bakeAll(); // city & site
+setBranch(null); // offline until the first state arrives
 (function loop() { poll().finally(() => setTimeout(loop, STATIC ? 30000 : 1500)); })();
 loop();
 </script>
