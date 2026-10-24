@@ -127,6 +127,7 @@ body.overview .bubble:not(.work){display:none}
 .weatherbar button.on{background:#286b72;color:#fff}.weatherbar button:disabled{cursor:default;opacity:.6}
 .card.on~.weatherbar{display:none}
 @media(min-width:761px) and (max-width:1000px){.hint{bottom:74px}}
+.blabel i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#9aa3a8;margin-right:6px;vertical-align:1px}.blabel.on i{background:#3ddc84;box-shadow:0 0 6px #3ddc84}
 @media(max-width:760px){.weatherbar{left:14px;bottom:calc(70px + env(safe-area-inset-bottom));max-width:calc(100vw - 28px)}.weatherbar button{font-size:10px;padding:6px 7px}.weatherbar .weatherlabel{font-size:9px}}
 </style>
 <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/"}}</script>
@@ -191,7 +192,7 @@ const fy = f => (f - 1) * FH;
 const LS = [[-14.6, -3.0], [-9.4, -3.0], [-14.6, 2.4], [-9.4, 2.4]]; // left-wing table slots
 const CS = [[2.8, -3.0], [7.2, -3.0], [2.8, 2.4], [7.2, 2.4]];      // centre-wing table slots
 const PLAN = {
-  4: { label: "4F · 執行長室 · 資安部 · 文件部 · Codex 團隊", teams: { sec: [CS[0]], docs: [CS[1]], codex: [CS[2]] }, extras: [["library", CS[3]]], room: "董事會議室" },
+  4: { label: "4F · 執行長室 · ChatGPT 顧問室 · 資安部 · 文件部", teams: { sec: [CS[0]], docs: [CS[1]] }, extras: [["library", CS[3]]], room: "董事會議室" }, // codex seats: gptOffice()
   3: { label: "3F · 技術部", teams: { eng: [LS[0], LS[1], LS[2]] }, extras: [["garden", LS[3]], ["library", CS[0]], ["library", CS[1]], ["garden", CS[2]], ["garden", CS[3]]], room: "技術會議室", wall: "ENGINEERING · 技術部" },
   2: { label: "2F · 品質保證部 · 資料與 AI 部 · 程式情報部", teams: { qa: [LS[0], LS[2]], ai: [CS[0]], intel: [CS[1]] }, extras: [["garden", LS[1]], ["library", LS[3]], ["garden", CS[2]], ["library", CS[3]]], room: "品質會議室", wall: "QUALITY · DATA · INTEL" },
   1: { label: "1F · 大廳 · 外包團隊 · 咖啡吧", teams: { contract: [LS[0], LS[1]] }, extras: [["waiting", LS[2]], ["waiting", LS[3]], ["garden", CS[0]], ["garden", CS[1]]], room: "訪客洽談室" },
@@ -383,6 +384,7 @@ Object.assign(MAT, {
   lampHead: new THREE.MeshBasicMaterial({ color: 0xc4c9cf }),
   ao: new THREE.MeshBasicMaterial({ map: aoTex, transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }),
   pool: new THREE.MeshBasicMaterial({ map: glowTex, color: 0xffb35c, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }),
+  teal: M(0x10a37f, { roughness: 0.4, metalness: 0.3 }), rugTeal: M(0xbfd8cf, { roughness: 1 }),
 });
 const BOOKS = [0x9b2226, 0x005f73, 0xee9b00, 0x3d405b, 0x81b29a, 0xe5e5e5].map(c => M(c));
 const FACADES = [
