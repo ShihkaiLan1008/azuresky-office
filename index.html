@@ -710,19 +710,19 @@ const glowPts = new THREE.Points(new THREE.BufferGeometry().setAttribute("positi
   new THREE.PointsMaterial({ map: glowTex, color: 0xffcf8a, size: 2.6, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
 scene.add(glowPts);
 
-// GigaDesk branch annex on the east lawn: clear of the lawn trees (x 28.75 / 36), the perimeter footpath (x 41.6),
-// the monument and flags (z 40); a short stone path joins it to the footpath. Status comes from state.branches.
+// GigaDesk branch annex on the east lawn, between the lawn trees (7,22) (21.5,22) (14.25,31) and north of the flower bed
+// (z 16.6), so it sits inside the home view; a stone path runs west to the fountain walk. Status comes from state.branches.
 const BRANCH = { branch: true, name: "GigaDesk", title: "", online: false, known: false };
-const annex = new THREE.Group(); annex.position.set(35.5, -0.1, 31.5); scene.add(annex);
+const annex = new THREE.Group(); annex.position.set(14.25, -0.1, 20.8); scene.add(annex);
 {
   const wy = 0.3, h = 2.8, top = wy + h;
   B(annex, 6.4, wy, 5.4, MAT.stone, 0, wy / 2, 0);
   B(annex, 5.5, 0.02, 4.5, MAT.deck, 0, wy + 0.01, 0, { cast: false });
   for (const s of [-1, 1]) { PL(annex, 5.6, h, MAT.glass, 0, wy + h / 2, s * 2.3); PL(annex, 4.6, h, MAT.glass, s * 2.8, wy + h / 2, 0, { ry: Math.PI / 2 }); }
   for (const sx of [-1, 1]) for (const sz of [-1, 1]) B(annex, 0.16, h, 0.16, MAT.graphite, sx * 2.8, wy + h / 2, sz * 2.3);
-  B(annex, 0.06, 2.3, 1.3, MAT.graphite, 2.82, wy + 1.15, 0, { cast: false }); // door frame toward the footpath
+  B(annex, 0.06, 2.3, 1.3, MAT.graphite, -2.82, wy + 1.15, 0, { cast: false }); // door frame toward the fountain walk
   B(annex, 6.6, 0.5, 5.6, MAT.fin, 0, top + 0.25, 0); B(annex, 6.64, 0.04, 5.64, MAT.led, 0, top + 0.02, 0, { cast: false }); // LED reveal under the roof edge
-  B(city, 3.0, 0.04, 1.2, MAT.stone, 39.8, -0.08, 31.5, { cast: false });
+  B(city, 8.0, 0.04, 1.2, MAT.stone, 7.05, -0.08, 20.8, { cast: false });
   at(0, wy, -0.6, 0, () => {
     B(annex, 2.2, 0.05, 0.8, MAT.oak, 0, 0.745, 0); for (const s of [-1, 1]) B(annex, 0.06, 0.72, 0.7, MAT.white, s * 1.05, 0.36, 0);
     for (const x of [-0.45, 0.45]) { B(annex, 0.62, 0.38, 0.03, MAT.dark, x, 1.1, -0.2); B(annex, 0.05, 0.3, 0.03, MAT.alu, x, 0.9, -0.22); }
