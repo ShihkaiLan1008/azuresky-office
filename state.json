@@ -1,0 +1,433 @@
+{
+ "static": true,
+ "updated": 1792841086,
+ "company": "Azuresky",
+ "ceo": {
+  "name": "Claude",
+  "title": "執行長 CEO",
+  "status": "idle",
+  "activity": "",
+  "task": "",
+  "since": 0,
+  "toolsToday": 0
+ },
+ "people": {
+  "Software Architect": {
+   "name": "Software Architect",
+   "title": "技術長 CTO",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Backend Architect": {
+   "name": "Backend Architect",
+   "title": "後端架構師",
+   "status": "working",
+   "doneToday": 1,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Frontend Developer": {
+   "name": "Frontend Developer",
+   "title": "前端工程師",
+   "status": "working",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Senior Developer": {
+   "name": "Senior Developer",
+   "title": "資深工程師",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Rapid Prototyper": {
+   "name": "Rapid Prototyper",
+   "title": "原型工程師",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Database Optimizer": {
+   "name": "Database Optimizer",
+   "title": "資料庫工程師",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "DevOps Automator": {
+   "name": "DevOps Automator",
+   "title": "DevOps 工程師",
+   "status": "idle",
+   "doneToday": 3,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Git Workflow Master": {
+   "name": "Git Workflow Master",
+   "title": "版本控管專員",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Minimal Change Engineer": {
+   "name": "Minimal Change Engineer",
+   "title": "精簡修改工程師",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Reality Checker": {
+   "name": "Reality Checker",
+   "title": "品保長 QA Lead",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Code Reviewer": {
+   "name": "Code Reviewer",
+   "title": "程式碼審查員",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Test Automation Engineer": {
+   "name": "Test Automation Engineer",
+   "title": "自動化測試工程師",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "API Tester": {
+   "name": "API Tester",
+   "title": "API 測試員",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Evidence Collector": {
+   "name": "Evidence Collector",
+   "title": "測試證據專員",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Performance Benchmarker": {
+   "name": "Performance Benchmarker",
+   "title": "效能測試員",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Security Architect": {
+   "name": "Security Architect",
+   "title": "資安長 CISO",
+   "status": "idle",
+   "doneToday": 1,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Application Security Engineer": {
+   "name": "Application Security Engineer",
+   "title": "應用資安工程師",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "AI Engineer": {
+   "name": "AI Engineer",
+   "title": "AI 主管",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Data Engineer": {
+   "name": "Data Engineer",
+   "title": "資料工程師",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Prompt Engineer": {
+   "name": "Prompt Engineer",
+   "title": "提示工程師",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "MCP Builder": {
+   "name": "MCP Builder",
+   "title": "MCP 工程師",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "codebase-memory": {
+   "name": "codebase-memory",
+   "title": "情報主管",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "codebase-memory-scout": {
+   "name": "codebase-memory-scout",
+   "title": "快速偵查員",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "codebase-memory-auditor": {
+   "name": "codebase-memory-auditor",
+   "title": "深度稽核員",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Technical Writer": {
+   "name": "Technical Writer",
+   "title": "技術文件主管",
+   "status": "idle",
+   "doneToday": 1,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "ChatGPT": {
+   "name": "ChatGPT",
+   "title": "共同經營者／備援 CEO",
+   "status": "idle",
+   "doneToday": 1,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Codex Frontend": {
+   "name": "Codex Frontend",
+   "title": "介面與空間設計工程師",
+   "status": "idle",
+   "doneToday": 2,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Codex Backend": {
+   "name": "Codex Backend",
+   "title": "後端與整合工程師",
+   "status": "idle",
+   "doneToday": 1,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Codex Reviewer": {
+   "name": "Codex Reviewer",
+   "title": "獨立審查與驗收工程師",
+   "status": "idle",
+   "doneToday": 1,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "general-purpose": {
+   "name": "general-purpose",
+   "title": "通用外包",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Explore": {
+   "name": "Explore",
+   "title": "搜尋外包",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Plan": {
+   "name": "Plan",
+   "title": "規劃外包",
+   "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  }
+ },
+ "departments": [
+  {
+   "id": "eng",
+   "name": "技術部",
+   "color": "#4f7cff",
+   "members": [
+    "Software Architect",
+    "Backend Architect",
+    "Frontend Developer",
+    "Senior Developer",
+    "Rapid Prototyper",
+    "Database Optimizer",
+    "DevOps Automator",
+    "Git Workflow Master",
+    "Minimal Change Engineer"
+   ]
+  },
+  {
+   "id": "qa",
+   "name": "品質保證部",
+   "color": "#1fa67a",
+   "members": [
+    "Reality Checker",
+    "Code Reviewer",
+    "Test Automation Engineer",
+    "API Tester",
+    "Evidence Collector",
+    "Performance Benchmarker"
+   ]
+  },
+  {
+   "id": "sec",
+   "name": "資安部",
+   "color": "#e0514b",
+   "members": [
+    "Security Architect",
+    "Application Security Engineer"
+   ]
+  },
+  {
+   "id": "ai",
+   "name": "資料與 AI 部",
+   "color": "#9b5de5",
+   "members": [
+    "AI Engineer",
+    "Data Engineer",
+    "Prompt Engineer",
+    "MCP Builder"
+   ]
+  },
+  {
+   "id": "intel",
+   "name": "程式情報部",
+   "color": "#e39b1b",
+   "members": [
+    "codebase-memory",
+    "codebase-memory-scout",
+    "codebase-memory-auditor"
+   ]
+  },
+  {
+   "id": "docs",
+   "name": "文件部",
+   "color": "#2aa3c7",
+   "members": [
+    "Technical Writer"
+   ]
+  },
+  {
+   "id": "codex",
+   "name": "Codex 共同經營團隊",
+   "color": "#458b78",
+   "members": [
+    "ChatGPT",
+    "Codex Frontend",
+    "Codex Backend",
+    "Codex Reviewer"
+   ]
+  },
+  {
+   "id": "contract",
+   "name": "外包團隊",
+   "color": "#8a8f98",
+   "members": [
+    "general-purpose",
+    "Explore",
+    "Plan"
+   ]
+  }
+ ],
+ "stats": {
+  "staff": 32,
+  "active": 2,
+  "doneToday": 11,
+  "dispatchedToday": 12
+ },
+ "feed": []
+}
