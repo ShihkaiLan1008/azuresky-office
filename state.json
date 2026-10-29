@@ -1,6 +1,6 @@
 {
  "static": true,
- "updated": 1793244160,
+ "updated": 1793244223,
  "company": "Azuresky",
  "ceo": {
   "name": "Claude",
@@ -306,7 +306,7 @@
    "name": "general-purpose",
    "title": "通用外包",
    "status": "idle",
-   "doneToday": 0,
+   "doneToday": 1,
    "activity": "",
    "task": "",
    "since": 0,
@@ -426,7 +426,7 @@
  "stats": {
   "staff": 32,
   "active": 0,
-  "doneToday": 1,
+  "doneToday": 2,
   "dispatchedToday": 0
  },
  "feed": [],
