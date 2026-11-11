@@ -1,11 +1,11 @@
 {
  "static": true,
- "updated": 1794363927,
+ "updated": 1794363990,
  "company": "Azuresky",
  "ceo": {
   "name": "Claude",
   "title": "執行長 CEO",
-  "status": "working",
+  "status": "idle",
   "activity": "",
   "task": "",
   "since": 0,
