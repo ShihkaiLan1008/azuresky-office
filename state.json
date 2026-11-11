@@ -1,6 +1,6 @@
 {
  "static": true,
- "updated": 1794391925,
+ "updated": 1794391988,
  "company": "Azuresky",
  "ceo": {
   "name": "Claude",
@@ -265,7 +265,7 @@
   "ChatGPT": {
    "name": "ChatGPT",
    "title": "共同經營者／備援 CEO",
-   "status": "idle",
+   "status": "working",
    "doneToday": 0,
    "activity": "",
    "task": "",
@@ -295,7 +295,7 @@
   "Codex Reviewer": {
    "name": "Codex Reviewer",
    "title": "獨立審查與驗收工程師",
-   "status": "idle",
+   "status": "working",
    "doneToday": 0,
    "activity": "",
    "task": "",
@@ -326,6 +326,16 @@
    "name": "Plan",
    "title": "規劃外包",
    "status": "idle",
+   "doneToday": 0,
+   "activity": "",
+   "task": "",
+   "since": 0,
+   "toolsToday": 0
+  },
+  "Codex DevOps": {
+   "name": "Codex DevOps",
+   "title": "臨時人員",
+   "status": "working",
    "doneToday": 0,
    "activity": "",
    "task": "",
@@ -419,13 +429,14 @@
    "members": [
     "general-purpose",
     "Explore",
-    "Plan"
+    "Plan",
+    "Codex DevOps"
    ]
   }
  ],
  "stats": {
-  "staff": 32,
-  "active": 0,
+  "staff": 33,
+  "active": 3,
   "doneToday": 0,
   "dispatchedToday": 0
  },
