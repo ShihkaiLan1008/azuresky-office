@@ -1,6 +1,6 @@
 {
  "static": true,
- "updated": 1794393587,
+ "updated": 1794393650,
  "company": "Azuresky",
  "ceo": {
   "name": "Claude",
@@ -265,7 +265,7 @@
   "ChatGPT": {
    "name": "ChatGPT",
    "title": "共同經營者／備援 CEO",
-   "status": "working",
+   "status": "idle",
    "doneToday": 0,
    "activity": "",
    "task": "",
@@ -436,7 +436,7 @@
  ],
  "stats": {
   "staff": 33,
-  "active": 1,
+  "active": 0,
   "doneToday": 0,
   "dispatchedToday": 0
  },
