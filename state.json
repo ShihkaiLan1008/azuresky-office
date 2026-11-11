@@ -1,6 +1,6 @@
 {
  "static": true,
- "updated": 1794391988,
+ "updated": 1794392112,
  "company": "Azuresky",
  "ceo": {
   "name": "Claude",
@@ -295,7 +295,7 @@
   "Codex Reviewer": {
    "name": "Codex Reviewer",
    "title": "獨立審查與驗收工程師",
-   "status": "working",
+   "status": "idle",
    "doneToday": 0,
    "activity": "",
    "task": "",
@@ -335,7 +335,7 @@
   "Codex DevOps": {
    "name": "Codex DevOps",
    "title": "臨時人員",
-   "status": "working",
+   "status": "idle",
    "doneToday": 0,
    "activity": "",
    "task": "",
@@ -436,7 +436,7 @@
  ],
  "stats": {
   "staff": 33,
-  "active": 3,
+  "active": 1,
   "doneToday": 0,
   "dispatchedToday": 0
  },
