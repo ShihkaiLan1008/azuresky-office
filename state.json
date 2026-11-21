@@ -1,6 +1,6 @@
 {
  "static": true,
- "updated": 1795221971,
+ "updated": 1795223672,
  "company": "Azuresky",
  "ceo": {
   "name": "Claude",
@@ -438,14 +438,14 @@
   "staff": 33,
   "active": 0,
   "doneToday": 0,
-  "dispatchedToday": 0
+  "dispatchedToday": 1
  },
  "feed": [],
  "branches": [
   {
    "name": "GigaDesk",
    "title": "AI 桌面分部",
-   "status": "online"
+   "status": "offline"
   }
  ]
 }
