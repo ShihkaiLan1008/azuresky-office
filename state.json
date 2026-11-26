@@ -1,6 +1,6 @@
 {
  "static": true,
- "updated": 1795708537,
+ "updated": 1795708845,
  "company": "Azuresky",
  "ceo": {
   "name": "Claude",
@@ -438,7 +438,7 @@
   "staff": 33,
   "active": 0,
   "doneToday": 0,
-  "dispatchedToday": 1
+  "dispatchedToday": 0
  },
  "feed": [],
  "branches": [
